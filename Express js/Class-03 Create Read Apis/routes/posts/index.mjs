@@ -5,13 +5,47 @@ const router = express.Router();
 const allPosts = []
 
 router.post("/post", (req, res) => {
-    const title = req.body.title
-    const body = req.body.description
-    res.send("post created");
+    // console.log(req.body);
+
+    if(!req.body.title){
+        res.status(400).send({
+            message : "title is required"
+        })
+    }
+
+    if(!req.body.description){
+        res.status(400).send({
+         message : "description is required"
+
+        })
+    }
+
+
+    const newPost = {
+        title : req.body.title,
+        description : req.body.description,
+        id : new Date().getTime(),
+
+    }
+
+    allPosts.push(newPost)
+
+
+
+    // console.log(title);
+    // console.log(description);
+    
+
+    res.send({
+        message : "post created"
+    });
 });
 
 router.get("/post", (req, res) => {
-    res.send("post get all");
+    res.send({
+        message : "all post fetched",
+        data : allPosts
+    });
 });
 
 router.get("/post/:postId", (req, res) => {
